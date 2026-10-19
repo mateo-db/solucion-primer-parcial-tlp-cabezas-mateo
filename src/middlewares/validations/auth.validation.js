@@ -11,6 +11,7 @@ export const registerValidation = [
     if (usernameExists) {
       throw new Error('Ese nombre de usuario ya está en uso')
     }
+    return true
   }),
   body("email")
   .isEmail()
@@ -19,6 +20,7 @@ export const registerValidation = [
     if (emailExists) {
       throw new Error("El email debe ser único")
     }
+    return true
   }),
   body("password")
   .isLength({min: 8}).withMessage('La contraseña debe tener minimo 8 caracteres')
@@ -32,12 +34,13 @@ export const registerValidation = [
   .isAlphanumeric().withMessage("El numero de empleado debe contener solo numeros y letras")
   .isLength({ min: 1, max: 20 }).withMessage("El numero de empleado debe de ser entre 1 y 20 caracteres")
   .custom(async (value) => {
-    const empNumExists = await UserModel.findOne({
+    const empNumExists = await ProfileModel.findOne({
       where: {employee_number: value}
     })
     if (empNumExists) {
       throw new Error("Ese numero de empleado debe ser único");
     }
+    return true
   }),
   body("first_name")
   .isAlpha('es-ES').withMessage("El primer nombre debe contener solo letras")

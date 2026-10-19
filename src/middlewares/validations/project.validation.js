@@ -20,6 +20,7 @@ export const createProjectValidation = [
       throw new Error("El código debe ser único");
       
     }
+    return true
   }),
   // TODO: 2. Validar name y description como obligatorios.
   body("name")
@@ -54,6 +55,7 @@ export const createProjectValidation = [
       if (!activeUser) {
         throw new Error('Ese id de líder no está asociado a ningún usuario activo')
       }
+      return true
   }),
   body('technology_id')
     .notEmpty().withMessage('Las tecnologías son obligatorias')
@@ -78,6 +80,7 @@ export const createProjectValidation = [
         // Significa que una o más IDs no existen en la base de datos
         throw new Error('Una o más de las tecnologías seleccionadas no son válidas o no existen');
       }
+      return true
     })
   // TODO: 3. Validar status: opcional y limitado a los estados permitidos.
   // TODO: 4. Validar start_date como fecha válida y budget como número positivo, ambos obligatorios.
@@ -102,6 +105,7 @@ export const updateProjectValidation = [
       throw new Error("El código debe ser único");
       
     }
+    return true
   }),
   body("name")
   .optional()
@@ -140,6 +144,7 @@ export const updateProjectValidation = [
       if (!activeUser) {
         throw new Error('Ese id de líder no está asociado a ningún usuario activo')
       }
+      return true
   }),
   body('technology_id')
   .optional()
@@ -164,6 +169,7 @@ export const updateProjectValidation = [
       // Significa que una o más IDs no existen en la base de datos
       throw new Error('Una o más de las tecnologías seleccionadas no son válidas o no existen');
     }
+    return true
   })
 
   // TODO: 7. Validar code como opcional y único, excluyendo el propio proyecto que se edita.

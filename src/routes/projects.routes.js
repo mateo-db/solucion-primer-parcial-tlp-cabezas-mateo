@@ -15,22 +15,24 @@ import {
   createProjectValidation,
   updateProjectValidation,
 } from "../middlewares/validations/project.validation.js";
+import { registerValidation } from "../middlewares/validations/auth.validation.js";
 
 export const projectRoutes = Router();
 
 // TODO: 1. Decidir y aplicar los middlewares que correspondan a cada ruta.
 
-// ? Crear un proyecto: requiere sesión iniciada y datos válidos.
-projectRoutes.post("/projects", createProject);
-
-// ? Listar todos los proyectos: solo administrator.
-projectRoutes.get("/projects", getAllProjects);
-
-// ? Listar los proyectos del usuario logueado: requiere sesión iniciada.
-projectRoutes.get("/projects/my-projects", getMyProjects);
-
 // ? Editar un proyecto: solo su líder y con datos válidos.
-projectRoutes.put("/projects/:id", updateProject);
+projectRoutes.put("/projects/:id", authMiddleware, leaderMiddleware, updateProjectValidation, validator, updateProject);
 
 // ? Eliminar un proyecto: solo su líder.
-projectRoutes.delete("/projects/:id", deleteProject);
+projectRoutes.delete("/projects/:id", authMiddleware, leaderMiddleware, deleteProject);
+
+// ? Crear un proyecto: requiere sesión iniciada y datos válidos.
+projectRoutes.post("/projects", authMiddleware, createProjectValidation, validator, createProject);
+
+// ? Listar todos los proyectos: solo administrator.
+projectRoutes.get("/projects", authMiddleware, adminMiddleware, getAllProjects);
+
+// ? Listar los proyectos del usuario logueado: requiere sesión iniciada.
+projectRoutes.get("/projects/my-projects", authMiddleware, getMyProjects);
+

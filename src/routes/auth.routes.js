@@ -19,4 +19,4 @@ authRoutes.post("/auth/register", registerValidation, validator, register);
 authRoutes.post("/auth/login", loginValidation, validator, login);
 
 // ? Cierre de sesión: requiere sesión iniciada.
-authRoutes.post("/auth/logout", logout);
+authRoutes.post("/auth/logout", authMiddleware, logout);
